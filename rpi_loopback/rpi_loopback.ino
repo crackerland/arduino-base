@@ -12,6 +12,18 @@ int read_pin(int pin){
   return val;
 }
 
+void log_all(){
+    clear_monitor();
+    for(int i = 0; i < pin_count; i++){
+      int pin = pins[i][0];
+      int val = digitalRead(pin);
+      Serial.print("Pin ");
+      Serial.print(pin);
+      Serial.print(": ");
+      Serial.println(val ? "HIGH" : "LOW");
+    }
+}
+
 void clear_monitor(){
   int lines = 16;
   while(lines){
@@ -37,6 +49,16 @@ void setup() {
 
 // the loop routine runs over and over again forever:
 void loop() {
+  for(int i = 0; i < pin_count; i++){
+        int pin = pins[i][0];
+        int &pinval = pins[i][1];
+        int val = digitalRead(pin);
+        if(pinval != val){
+           pinval = val; 
+           log_all();
+        }
+    }
+  /*
   if(Serial.available()){
     char ch = Serial.read();
     switch(ch){
@@ -70,6 +92,7 @@ void loop() {
         Serial.println("Invalid Option");
     }
   } 
+  */
 //  delay(100);
   
 }
